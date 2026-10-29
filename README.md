@@ -15,4 +15,5 @@ noCOOPure : exclue matCOOPure du benchmark
 Installation : 
 
 $ cd chemin/des/sources
+
 $ pip install .
