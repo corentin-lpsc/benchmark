@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+
+<html lang="fr" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>benchmark package &#8212; Documentation MatCOO benchmark 1.0</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=7a28dfa3"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/translations.js?v=e6b791cb"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="prev" title="benchmark" href="modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="benchmark-package">
+<h1>benchmark package<a class="headerlink" href="#benchmark-package" title="Lien vers cette rubrique">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Lien vers cette rubrique">¶</a></h2>
+</section>
+<section id="module-benchmark.benchmark">
+<span id="benchmark-benchmark-module"></span><h2>benchmark.benchmark module<a class="headerlink" href="#module-benchmark.benchmark" title="Lien vers cette rubrique">¶</a></h2>
+<p>Benchmark du produit matrice-vecteur : MatCooPure, MatCooOptim, numpy (dense) et scipy.</p>
+<p>Deux expériences sont menées :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nnz</span></code> : dimension fixe (la plus grande de <code class="xref py py-data docutils literal notranslate"><span class="pre">DIMENSIONS</span></code>), nombre d’éléments non nuls variable ;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dim</span></code> : taux de remplissage fixe (<code class="xref py py-data docutils literal notranslate"><span class="pre">DENSITE</span></code>), dimension variable.</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="benchmark.benchmark.liste_nnz">
+<span class="sig-prename descclassname"><span class="pre">benchmark.benchmark.</span></span><span class="sig-name descname"><span class="pre">liste_nnz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/benchmark.html#liste_nnz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.benchmark.liste_nnz" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Liste croissante de nombres d’éléments non nuls, terminée par <code class="docutils literal notranslate"><span class="pre">N</span></code>.</p>
+<p class="rubric">Exemples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">liste_nnz</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="go">[50, 100, 200, 500, 1000]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">liste_nnz</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="go">[30]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="benchmark.benchmark.operations">
+<span class="sig-prename descclassname"><span class="pre">benchmark.benchmark.</span></span><span class="sig-name descname"><span class="pre">operations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nnz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avec_pure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/benchmark.html#operations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.benchmark.operations" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Construit une matrice aléatoire n x n avec nnz éléments et renvoie
+un dictionnaire {nom: fonction sans argument} calculant le produit matrice-vecteur.</p>
+<p>Toutes les implémentations utilisent la même matrice et le même vecteur.</p>
+<p class="rubric">Exemples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">operations</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">avec_pure</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<span class="go">[&#39;coo_optim&#39;, &#39;numpy&#39;, &#39;scipy&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="benchmark.benchmark.rapport">
+<span class="sig-prename descclassname"><span class="pre">benchmark.benchmark.</span></span><span class="sig-name descname"><span class="pre">rapport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">res</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/benchmark.html#rapport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.benchmark.rapport" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Rapport textuel des résultats de <a class="reference internal" href="#benchmark.benchmark.run_benchmark" title="benchmark.benchmark.run_benchmark"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_benchmark()</span></code></a> (temps en secondes).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="benchmark.benchmark.run_benchmark">
+<span class="sig-prename descclassname"><span class="pre">benchmark.benchmark.</span></span><span class="sig-name descname"><span class="pre">run_benchmark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avec_pure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/benchmark.html#run_benchmark"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.benchmark.run_benchmark" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Lance les deux expériences.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> (<em>int</em>) – Nombre maximal d’éléments non nuls.</p></li>
+<li><p><strong>avec_pure</strong> (<em>bool</em>) – Inclure MatCooPure (lent) ou non.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">{&quot;nnz&quot;:</span> <span class="pre">{&quot;n&quot;:</span> <span class="pre">...,</span> <span class="pre">&quot;x&quot;:</span> <span class="pre">[...],</span> <span class="pre">&quot;temps&quot;:</span> <span class="pre">{nom:</span> <span class="pre">[...]}},</span>
+<span class="pre">&quot;dim&quot;:</span> <span class="pre">{&quot;x&quot;:</span> <span class="pre">[...],</span> <span class="pre">&quot;nnz&quot;:</span> <span class="pre">[...],</span> <span class="pre">&quot;temps&quot;:</span> <span class="pre">{nom:</span> <span class="pre">[...]}}}</span></code>
+Un temps vaut <code class="docutils literal notranslate"><span class="pre">nan</span></code> si la mesure précédente a dépassé 1 s.</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="benchmark.benchmark.tracer">
+<span class="sig-prename descclassname"><span class="pre">benchmark.benchmark.</span></span><span class="sig-name descname"><span class="pre">tracer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">res</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortie</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'benchCOO.png'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/benchmark.html#tracer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.benchmark.tracer" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Trace les deux graphes côte à côte et les enregistre au format png dans <code class="docutils literal notranslate"><span class="pre">sortie</span></code>.</p>
+</dd></dl>
+
+</section>
+<section id="module-benchmark.mat_coo_optim">
+<span id="benchmark-mat-coo-optim-module"></span><h2>benchmark.mat_coo_optim module<a class="headerlink" href="#module-benchmark.mat_coo_optim" title="Lien vers cette rubrique">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="benchmark.mat_coo_optim.MatCooOptim">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">benchmark.mat_coo_optim.</span></span><span class="sig-name descname"><span class="pre">MatCooOptim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_optim.MatCooOptim" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Bases : <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>COO matrix stored in numpy arrays (same interface as MatCooPure).</p>
+<section id="attributes">
+<h3>Attributes:<a class="headerlink" href="#attributes" title="Lien vers cette rubrique">¶</a></h3>
+<dl class="simple">
+<dt>n<span class="classifier">int</span></dt><dd><p>The number of rows.</p>
+</dd>
+<dt>m<span class="classifier">int</span></dt><dd><p>The number of columns.</p>
+</dd>
+<dt>row, col<span class="classifier">numpy.ndarray (int64)</span></dt><dd><p>Row and column index of each stored element.</p>
+</dd>
+<dt>val<span class="classifier">numpy.ndarray</span></dt><dd><p>Value of each stored element.</p>
+</dd>
+<dt>data<span class="classifier">list of tuple (read only)</span></dt><dd><p>The elements as a list of (i, j, value), as in MatCooPure.</p>
+</dd>
+<dt>nnz<span class="classifier">int</span></dt><dd><p>The number of stored elements (read only).</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="benchmark.mat_coo_optim.MatCooOptim.data">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">data</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#benchmark.mat_coo_optim.MatCooOptim.data" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_optim.MatCooOptim.dev_show">
+<span class="sig-name descname"><span class="pre">dev_show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.dev_show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_optim.MatCooOptim.dev_show" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Display a summary of the matrix and its memory footprint (the three arrays).</p>
+<section id="example">
+<h4>Example:<a class="headerlink" href="#example" title="Lien vers cette rubrique">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span> <span class="o">=</span> <span class="n">MatCooOptim</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span><span class="o">.</span><span class="n">dev_show</span><span class="p">()</span>
+<span class="go">COO matrix ((2, 2)) with nnz=2</span>
+<span class="go">  0   0   1.0</span>
+<span class="go">  1   1   2.0</span>
+<span class="go">...</span>
+<span class="go">  0   0   1.0</span>
+<span class="go">  1   1   2.0</span>
+
+<span class="go">Memory footprint: 48 bytes.</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_optim.MatCooOptim.dot">
+<span class="sig-name descname"><span class="pre">dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.dot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_optim.MatCooOptim.dot" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Alias for mat_vec_product.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_optim.MatCooOptim.fill_random">
+<span class="sig-name descname"><span class="pre">fill_random</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nnz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.fill_random"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_optim.MatCooOptim.fill_random" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Fill with nnz random elements, sorted by (row, col). Not the same values as MatCooPure for a given seed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_optim.MatCooOptim.from_arrays">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_arrays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_optim.MatCooOptim" title="benchmark.mat_coo_optim.MatCooOptim"><span class="pre">MatCooOptim</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.from_arrays"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_optim.MatCooOptim.from_arrays" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a matrix directly from the three arrays (no conversion).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_optim.MatCooOptim.from_numpy">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_optim.MatCooOptim" title="benchmark.mat_coo_optim.MatCooOptim"><span class="pre">MatCooOptim</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.from_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_optim.MatCooOptim.from_numpy" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a COO matrix from a NumPy array.</p>
+<p>Examples
+&gt;&gt;&gt; A = np.array([[1, 2, 0], [0, 0, 3], [4, 0, 5]])
+&gt;&gt;&gt; print(MatCooOptim.from_numpy(A))
+COO matrix ((3, 3)) with nnz=5
+data:
+(0, 0, 1)
+(0, 1, 2)
+(1, 2, 3)
+(2, 0, 4)
+(2, 2, 5)
+&lt;BLANKLINE&gt;</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_optim.MatCooOptim.identity">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_optim.MatCooOptim" title="benchmark.mat_coo_optim.MatCooOptim"><span class="pre">MatCooOptim</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.identity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_optim.MatCooOptim.identity" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create the n x n identity matrix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_optim.MatCooOptim.mat_mat_product">
+<span class="sig-name descname"><span class="pre">mat_mat_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#benchmark.mat_coo_optim.MatCooOptim" title="benchmark.mat_coo_optim.MatCooOptim"><span class="pre">MatCooOptim</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_optim.MatCooOptim" title="benchmark.mat_coo_optim.MatCooOptim"><span class="pre">MatCooOptim</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.mat_mat_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_optim.MatCooOptim.mat_mat_product" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Product of two COO matrices, without Python loop.</p>
+<section id="examples">
+<h4>Examples:<a class="headerlink" href="#examples" title="Lien vers cette rubrique">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data1</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat1</span> <span class="o">=</span> <span class="n">MatCooOptim</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">data1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat2</span> <span class="o">=</span> <span class="n">MatCooOptim</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">data1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat1</span><span class="o">.</span><span class="n">mat_mat_product</span><span class="p">(</span><span class="n">mat2</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+<span class="go">[(0, 0, 1.0), (0, 1, 2.0), (2, 0, 24.0), (2, 1, 8.0), (2, 2, 25.0)]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_optim.MatCooOptim.mat_vec_product">
+<span class="sig-name descname"><span class="pre">mat_vec_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.mat_vec_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_optim.MatCooOptim.mat_vec_product" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Product of the matrix and a vector, without Python loop.</p>
+<section id="id1">
+<h4>Examples:<a class="headerlink" href="#id1" title="Lien vers cette rubrique">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">I4</span> <span class="o">=</span> <span class="n">MatCooOptim</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">I4</span><span class="o">.</span><span class="n">mat_vec_product</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="go">array([0., 1., 2., 3.])</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="benchmark.mat_coo_optim.MatCooOptim.nnz">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">nnz</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#benchmark.mat_coo_optim.MatCooOptim.nnz" title="Lien vers cette définition">¶</a></dt>
+<dd><p>The number of stored elements.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_optim.MatCooOptim.random">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">random</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nnz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_optim.MatCooOptim" title="benchmark.mat_coo_optim.MatCooOptim"><span class="pre">MatCooOptim</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.random"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_optim.MatCooOptim.random" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a random COO matrix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_optim.MatCooOptim.to_numpy">
+<span class="sig-name descname"><span class="pre">to_numpy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.to_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_optim.MatCooOptim.to_numpy" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Convert to a dense NumPy array (duplicates are summed).</p>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-benchmark.mat_coo_pure">
+<span id="benchmark-mat-coo-pure-module"></span><h2>benchmark.mat_coo_pure module<a class="headerlink" href="#module-benchmark.mat_coo_pure" title="Lien vers cette rubrique">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="benchmark.mat_coo_pure.MatCooPure">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">benchmark.mat_coo_pure.</span></span><span class="sig-name descname"><span class="pre">MatCooPure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_pure.MatCooPure" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Bases : <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>COO matrix class (see Wikipedia for more information).</p>
+<section id="id2">
+<h3>Attributes:<a class="headerlink" href="#id2" title="Lien vers cette rubrique">¶</a></h3>
+<dl class="simple">
+<dt>n<span class="classifier">int</span></dt><dd><p>The number of rows.</p>
+</dd>
+<dt>m<span class="classifier">int</span></dt><dd><p>The number of columns.</p>
+</dd>
+<dt>data<span class="classifier">list of tuple</span></dt><dd><p>List containing a tuple of coordinates (i: int, j: int) and a float value.</p>
+</dd>
+<dt>nnz<span class="classifier">int</span></dt><dd><p>The number of non-zero elements (can be accessed but not modified).</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_pure.MatCooPure.dev_show">
+<span class="sig-name descname"><span class="pre">dev_show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.dev_show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_pure.MatCooPure.dev_show" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Displays a summary of the matrix and its memory footprint.</p>
+<p>This method prints a summary of the matrix, including its size, the number of non-zero elements,
+the first two and last two non-zero elements (if they exist), and the memory footprint of the data.</p>
+<section id="id3">
+<h4>Example:<a class="headerlink" href="#id3" title="Lien vers cette rubrique">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span> <span class="o">=</span> <span class="n">MatCooPure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span><span class="o">.</span><span class="n">dev_show</span><span class="p">()</span>
+<span class="go">COO matrix ((2, 2)) with nnz=2</span>
+<span class="go">  0   0   1.00e+00</span>
+<span class="go">  1   1   2.00e+00</span>
+<span class="go">...</span>
+<span class="go">  0   0   1.00e+00</span>
+<span class="go">  1   1   2.00e+00</span>
+
+<span class="go">Memory footprint: 72 bytes.</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_pure.MatCooPure.dot">
+<span class="sig-name descname"><span class="pre">dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.dot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_pure.MatCooPure.dot" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Calculate the product of the COO matrix and a vector.</p>
+<p>Is just an alias for mat_vec_product.</p>
+<section id="parameters">
+<h4>Parameters:<a class="headerlink" href="#parameters" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>vec<span class="classifier">numpy.ndarray</span></dt><dd><p>The vector to multiply with the matrix.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns:<a class="headerlink" href="#returns" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>numpy.ndarray</dt><dd><p>The result of the matrix-vector multiplication.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_pure.MatCooPure.fill_random">
+<span class="sig-name descname"><span class="pre">fill_random</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nnz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.fill_random"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_pure.MatCooPure.fill_random" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Fill the COO matrix with random values.</p>
+<section id="id4">
+<h4>Parameters:<a class="headerlink" href="#id4" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>nnz<span class="classifier">int</span></dt><dd><p>The number of non-zero elements to fill.</p>
+</dd>
+<dt>seed<span class="classifier">int, optional</span></dt><dd><p>Seed for the random number generator.</p>
+</dd>
+</dl>
+</section>
+<section id="id5">
+<h4>Returns:<a class="headerlink" href="#id5" title="Lien vers cette rubrique">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_pure.MatCooPure.from_numpy">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_pure.MatCooPure" title="benchmark.mat_coo_pure.MatCooPure"><span class="pre">MatCooPure</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.from_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_pure.MatCooPure.from_numpy" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a new COO matrix from a NumPy array.</p>
+<section id="id6">
+<h4>Parameters:<a class="headerlink" href="#id6" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>arr<span class="classifier">numpy.ndarray</span></dt><dd><p>The NumPy array to convert to a COO matrix.</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h4>Returns:<a class="headerlink" href="#id7" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>MatCooPure</dt><dd><p>A new COO matrix representing the input array.</p>
+</dd>
+</dl>
+<p>Examples
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; A=np.array([[1,2,0],[0,0,3],[4,0,5]])
+&gt;&gt;&gt; mat=MatCooPure.from_numpy(A)
+&gt;&gt;&gt; print(mat)
+COO matrix ((3, 3)) with nnz=5
+data:
+(0, 0, 1)
+(0, 1, 2)
+(1, 2, 3)
+(2, 0, 4)
+(2, 2, 5)
+&lt;BLANKLINE&gt;</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_pure.MatCooPure.identity">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_pure.MatCooPure" title="benchmark.mat_coo_pure.MatCooPure"><span class="pre">MatCooPure</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.identity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_pure.MatCooPure.identity" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create an identity matrix of size n x n.</p>
+<section id="id8">
+<h4>Parameters:<a class="headerlink" href="#id8" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>n<span class="classifier">int</span></dt><dd><p>The size of the identity matrix.</p>
+</dd>
+</dl>
+</section>
+<section id="id9">
+<h4>Returns:<a class="headerlink" href="#id9" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>MatCooPure</dt><dd><p>A new COO matrix representing the identity matrix.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_pure.MatCooPure.mat_mat_product">
+<span class="sig-name descname"><span class="pre">mat_mat_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#benchmark.mat_coo_pure.MatCooPure" title="benchmark.mat_coo_pure.MatCooPure"><span class="pre">MatCooPure</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_pure.MatCooPure" title="benchmark.mat_coo_pure.MatCooPure"><span class="pre">MatCooPure</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.mat_mat_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_pure.MatCooPure.mat_mat_product" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Calculate the product of two COO matrices.</p>
+<section id="id10">
+<h4>Parameters:<a class="headerlink" href="#id10" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>other<span class="classifier">MatCooPure</span></dt><dd><p>The matrix to multiply with the matrix.</p>
+</dd>
+</dl>
+</section>
+<section id="id11">
+<h4>Returns:<a class="headerlink" href="#id11" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>MatCooPure</dt><dd><p>The result of the matrix-matrix multiplication.</p>
+</dd>
+</dl>
+</section>
+<section id="id12">
+<h4>Examples:<a class="headerlink" href="#id12" title="Lien vers cette rubrique">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data1</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat1</span> <span class="o">=</span> <span class="n">MatCooPure</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">data1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data2</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat2</span> <span class="o">=</span> <span class="n">MatCooPure</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">data2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">mat1</span><span class="o">.</span><span class="n">mat_mat_product</span><span class="p">(</span><span class="n">mat2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">data</span>
+<span class="go">[(0, 0, 1.0), (0, 1, 2.0), (2, 0, 24.0), (2, 1, 8.0), (2, 2, 25.0)]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_pure.MatCooPure.mat_vec_product">
+<span class="sig-name descname"><span class="pre">mat_vec_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.mat_vec_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_pure.MatCooPure.mat_vec_product" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Calculate the product of the COO matrix and a vector.</p>
+<section id="id13">
+<h4>Parameters:<a class="headerlink" href="#id13" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>vec<span class="classifier">numpy.ndarray</span></dt><dd><p>The vector to multiply with the matrix.</p>
+</dd>
+</dl>
+</section>
+<section id="id14">
+<h4>Returns:<a class="headerlink" href="#id14" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>numpy.ndarray</dt><dd><p>The result of the matrix-vector multiplication.</p>
+</dd>
+</dl>
+</section>
+<section id="id15">
+<h4>Examples:<a class="headerlink" href="#id15" title="Lien vers cette rubrique">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">I4</span> <span class="o">=</span> <span class="n">MatCooPure</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">I4</span><span class="o">.</span><span class="n">mat_vec_product</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="go">array([0., 1., 2., 3.])</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="benchmark.mat_coo_pure.MatCooPure.nnz">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">nnz</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#benchmark.mat_coo_pure.MatCooPure.nnz" title="Lien vers cette définition">¶</a></dt>
+<dd><p>The number of non-zero elements in the matrix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_pure.MatCooPure.random">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">random</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nnz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_pure.MatCooPure" title="benchmark.mat_coo_pure.MatCooPure"><span class="pre">MatCooPure</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.random"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_pure.MatCooPure.random" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a random COO matrix.</p>
+<section id="id16">
+<h4>Parameters:<a class="headerlink" href="#id16" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>n<span class="classifier">int</span></dt><dd><p>The number of rows.</p>
+</dd>
+<dt>m<span class="classifier">int</span></dt><dd><p>The number of columns.</p>
+</dd>
+<dt>nnz<span class="classifier">int</span></dt><dd><p>The number of non-zero elements to fill.</p>
+</dd>
+<dt>seed<span class="classifier">int, optional</span></dt><dd><p>Seed for the random number generator.</p>
+</dd>
+</dl>
+</section>
+<section id="id17">
+<h4>Returns:<a class="headerlink" href="#id17" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>MatCooPure</dt><dd><p>A new random COO matrix.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.mat_coo_pure.MatCooPure.to_numpy">
+<span class="sig-name descname"><span class="pre">to_numpy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.to_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.mat_coo_pure.MatCooPure.to_numpy" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Convert the COO matrix to a dense NumPy array.</p>
+<section id="id18">
+<h4>Returns:<a class="headerlink" href="#id18" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>numpy.ndarray</dt><dd><p>A dense NumPy array representing the COO matrix.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-benchmark.utils">
+<span id="benchmark-utils-module"></span><h2>benchmark.utils module<a class="headerlink" href="#module-benchmark.utils" title="Lien vers cette rubrique">¶</a></h2>
+<p>utils.py</p>
+<p>This module provides utility functions for benchmarking and memory profiling.</p>
+<section id="functions">
+<h3>Functions:<a class="headerlink" href="#functions" title="Lien vers cette rubrique">¶</a></h3>
+<dl class="simple">
+<dt>init_benchmark_results():</dt><dd><p>Returns a dictionary to store the benchmarking results for different matrix operations.</p>
+</dd>
+<dt>format_memory(mem_usage):</dt><dd><p>Takes a memory usage value in bytes and converts it to a more readable format (KB, MB, GB).</p>
+</dd>
+<dt>timer(operation, times, memories=None):</dt><dd><p>A timer function that measures the execution time and memory usage of a given operation.</p>
+</dd>
+<dt>print_benchmark_results(benchmark_results, sizes, show_memory_usage=True):</dt><dd><p>Prints the benchmarking results in human readable way.</p>
+</dd>
+<dt>plot_CPU_time_benchmark(sizes, benchmark_results, title=”Time Comparison”, xlabel=”Matrix Size”, ylabel=”Time (s)”):</dt><dd><p>Plots the CPU time benchmarking results.</p>
+</dd>
+</dl>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="benchmark.utils.format_memory">
+<span class="sig-prename descclassname"><span class="pre">benchmark.utils.</span></span><span class="sig-name descname"><span class="pre">format_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mem_usage</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/utils.html#format_memory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.utils.format_memory" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="benchmark.utils.init_benchmark_results">
+<span class="sig-prename descclassname"><span class="pre">benchmark.utils.</span></span><span class="sig-name descname"><span class="pre">init_benchmark_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/utils.html#init_benchmark_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.utils.init_benchmark_results" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Returns a dictionary with the following structure</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="benchmark.utils.plot_CPU_time_benchmark">
+<span class="sig-prename descclassname"><span class="pre">benchmark.utils.</span></span><span class="sig-name descname"><span class="pre">plot_CPU_time_benchmark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sizes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmark_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Time</span> <span class="pre">Comparison'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Matrix</span> <span class="pre">Size'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Time</span> <span class="pre">(s)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlog</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/utils.html#plot_CPU_time_benchmark"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.utils.plot_CPU_time_benchmark" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="benchmark.utils.print_benchmark_results">
+<span class="sig-prename descclassname"><span class="pre">benchmark.utils.</span></span><span class="sig-name descname"><span class="pre">print_benchmark_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">benchmark_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sizes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_memory_usage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/utils.html#print_benchmark_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.utils.print_benchmark_results" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="benchmark.utils.timer">
+<span class="sig-prename descclassname"><span class="pre">benchmark.utils.</span></span><span class="sig-name descname"><span class="pre">timer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">memories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/benchmark/utils.html#timer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.utils.timer" title="Lien vers cette définition">¶</a></dt>
+<dd><p>An advanced timer. Note that for very fast operations, the timer’s overhead might be significant compared to the computation time. In such cases, feel free to retest using %timeit or modify the function.</p>
+<p>Use case:
+memories = None: memory is not measured, avoiding unnecessary overhead.
+memories = []: memory is measured, and the results are stored in the memories list. =&gt; low computation times measured may not be representative of reality.</p>
+<section id="arguments">
+<h3>Arguments:<a class="headerlink" href="#arguments" title="Lien vers cette rubrique">¶</a></h3>
+<dl class="simple">
+<dt>operation: the function to be called (without parentheses)</dt><dd><p>You can use a lambda function to pass arguments to the function. For example: lambda: my_function(arg1, arg2)</p>
+</dd>
+<dt>times: list</dt><dd><p>List in which computation times are stored. We add np.nan if the computation time exceeds 1 second.</p>
+</dd>
+<dt>memories: list or None</dt><dd><p>List in which used memory is stored. We add np.nan if the computation time exceeds 1 second.
+If None, memory is not measured.</p>
+</dd>
+</dl>
+</section>
+<section id="id19">
+<h3>Returns:<a class="headerlink" href="#id19" title="Lien vers cette rubrique">¶</a></h3>
+<p>None</p>
+</section>
+<section id="exemple">
+<h3>Exemple:<a class="headerlink" href="#exemple" title="Lien vers cette rubrique">¶</a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">times</span><span class="o">=</span><span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">timer</span><span class="p">(</span><span class="k">lambda</span> <span class="p">:</span> <span class="nb">max</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">100</span><span class="p">]),</span> <span class="n">times</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+<span class="go">[1.6709964256733656e-06]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-benchmark">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-benchmark" title="Lien vers cette rubrique">¶</a></h2>
+<p>Matrices creuses au format COO (version pure Python et version numpy) et outil de benchmark.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="benchmark.MatCooOptim">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">benchmark.</span></span><span class="sig-name descname"><span class="pre">MatCooOptim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooOptim" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Bases : <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>COO matrix stored in numpy arrays (same interface as MatCooPure).</p>
+<section id="id20">
+<h3>Attributes:<a class="headerlink" href="#id20" title="Lien vers cette rubrique">¶</a></h3>
+<dl class="simple">
+<dt>n<span class="classifier">int</span></dt><dd><p>The number of rows.</p>
+</dd>
+<dt>m<span class="classifier">int</span></dt><dd><p>The number of columns.</p>
+</dd>
+<dt>row, col<span class="classifier">numpy.ndarray (int64)</span></dt><dd><p>Row and column index of each stored element.</p>
+</dd>
+<dt>val<span class="classifier">numpy.ndarray</span></dt><dd><p>Value of each stored element.</p>
+</dd>
+<dt>data<span class="classifier">list of tuple (read only)</span></dt><dd><p>The elements as a list of (i, j, value), as in MatCooPure.</p>
+</dd>
+<dt>nnz<span class="classifier">int</span></dt><dd><p>The number of stored elements (read only).</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="benchmark.MatCooOptim.data">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">data</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#benchmark.MatCooOptim.data" title="Lien vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooOptim.dev_show">
+<span class="sig-name descname"><span class="pre">dev_show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.dev_show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooOptim.dev_show" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Display a summary of the matrix and its memory footprint (the three arrays).</p>
+<section id="id21">
+<h4>Example:<a class="headerlink" href="#id21" title="Lien vers cette rubrique">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span> <span class="o">=</span> <span class="n">MatCooOptim</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span><span class="o">.</span><span class="n">dev_show</span><span class="p">()</span>
+<span class="go">COO matrix ((2, 2)) with nnz=2</span>
+<span class="go">  0   0   1.0</span>
+<span class="go">  1   1   2.0</span>
+<span class="go">...</span>
+<span class="go">  0   0   1.0</span>
+<span class="go">  1   1   2.0</span>
+
+<span class="go">Memory footprint: 48 bytes.</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooOptim.dot">
+<span class="sig-name descname"><span class="pre">dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.dot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooOptim.dot" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Alias for mat_vec_product.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooOptim.fill_random">
+<span class="sig-name descname"><span class="pre">fill_random</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nnz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.fill_random"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooOptim.fill_random" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Fill with nnz random elements, sorted by (row, col). Not the same values as MatCooPure for a given seed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooOptim.from_arrays">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_arrays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_optim.MatCooOptim" title="benchmark.mat_coo_optim.MatCooOptim"><span class="pre">MatCooOptim</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.from_arrays"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooOptim.from_arrays" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a matrix directly from the three arrays (no conversion).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooOptim.from_numpy">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_optim.MatCooOptim" title="benchmark.mat_coo_optim.MatCooOptim"><span class="pre">MatCooOptim</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.from_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooOptim.from_numpy" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a COO matrix from a NumPy array.</p>
+<p>Examples
+&gt;&gt;&gt; A = np.array([[1, 2, 0], [0, 0, 3], [4, 0, 5]])
+&gt;&gt;&gt; print(MatCooOptim.from_numpy(A))
+COO matrix ((3, 3)) with nnz=5
+data:
+(0, 0, 1)
+(0, 1, 2)
+(1, 2, 3)
+(2, 0, 4)
+(2, 2, 5)
+&lt;BLANKLINE&gt;</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooOptim.identity">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_optim.MatCooOptim" title="benchmark.mat_coo_optim.MatCooOptim"><span class="pre">MatCooOptim</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.identity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooOptim.identity" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create the n x n identity matrix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooOptim.mat_mat_product">
+<span class="sig-name descname"><span class="pre">mat_mat_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#benchmark.mat_coo_optim.MatCooOptim" title="benchmark.mat_coo_optim.MatCooOptim"><span class="pre">MatCooOptim</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_optim.MatCooOptim" title="benchmark.mat_coo_optim.MatCooOptim"><span class="pre">MatCooOptim</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.mat_mat_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooOptim.mat_mat_product" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Product of two COO matrices, without Python loop.</p>
+<section id="id22">
+<h4>Examples:<a class="headerlink" href="#id22" title="Lien vers cette rubrique">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data1</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat1</span> <span class="o">=</span> <span class="n">MatCooOptim</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">data1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat2</span> <span class="o">=</span> <span class="n">MatCooOptim</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">data1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat1</span><span class="o">.</span><span class="n">mat_mat_product</span><span class="p">(</span><span class="n">mat2</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+<span class="go">[(0, 0, 1.0), (0, 1, 2.0), (2, 0, 24.0), (2, 1, 8.0), (2, 2, 25.0)]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooOptim.mat_vec_product">
+<span class="sig-name descname"><span class="pre">mat_vec_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.mat_vec_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooOptim.mat_vec_product" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Product of the matrix and a vector, without Python loop.</p>
+<section id="id23">
+<h4>Examples:<a class="headerlink" href="#id23" title="Lien vers cette rubrique">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">I4</span> <span class="o">=</span> <span class="n">MatCooOptim</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">I4</span><span class="o">.</span><span class="n">mat_vec_product</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="go">array([0., 1., 2., 3.])</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="benchmark.MatCooOptim.nnz">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">nnz</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#benchmark.MatCooOptim.nnz" title="Lien vers cette définition">¶</a></dt>
+<dd><p>The number of stored elements.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooOptim.random">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">random</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nnz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_optim.MatCooOptim" title="benchmark.mat_coo_optim.MatCooOptim"><span class="pre">MatCooOptim</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.random"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooOptim.random" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a random COO matrix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooOptim.to_numpy">
+<span class="sig-name descname"><span class="pre">to_numpy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_optim.html#MatCooOptim.to_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooOptim.to_numpy" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Convert to a dense NumPy array (duplicates are summed).</p>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="benchmark.MatCooPure">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">benchmark.</span></span><span class="sig-name descname"><span class="pre">MatCooPure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooPure" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Bases : <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>COO matrix class (see Wikipedia for more information).</p>
+<section id="id24">
+<h3>Attributes:<a class="headerlink" href="#id24" title="Lien vers cette rubrique">¶</a></h3>
+<dl class="simple">
+<dt>n<span class="classifier">int</span></dt><dd><p>The number of rows.</p>
+</dd>
+<dt>m<span class="classifier">int</span></dt><dd><p>The number of columns.</p>
+</dd>
+<dt>data<span class="classifier">list of tuple</span></dt><dd><p>List containing a tuple of coordinates (i: int, j: int) and a float value.</p>
+</dd>
+<dt>nnz<span class="classifier">int</span></dt><dd><p>The number of non-zero elements (can be accessed but not modified).</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooPure.dev_show">
+<span class="sig-name descname"><span class="pre">dev_show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.dev_show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooPure.dev_show" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Displays a summary of the matrix and its memory footprint.</p>
+<p>This method prints a summary of the matrix, including its size, the number of non-zero elements,
+the first two and last two non-zero elements (if they exist), and the memory footprint of the data.</p>
+<section id="id25">
+<h4>Example:<a class="headerlink" href="#id25" title="Lien vers cette rubrique">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span> <span class="o">=</span> <span class="n">MatCooPure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span><span class="o">.</span><span class="n">dev_show</span><span class="p">()</span>
+<span class="go">COO matrix ((2, 2)) with nnz=2</span>
+<span class="go">  0   0   1.00e+00</span>
+<span class="go">  1   1   2.00e+00</span>
+<span class="go">...</span>
+<span class="go">  0   0   1.00e+00</span>
+<span class="go">  1   1   2.00e+00</span>
+
+<span class="go">Memory footprint: 72 bytes.</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooPure.dot">
+<span class="sig-name descname"><span class="pre">dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.dot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooPure.dot" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Calculate the product of the COO matrix and a vector.</p>
+<p>Is just an alias for mat_vec_product.</p>
+<section id="id26">
+<h4>Parameters:<a class="headerlink" href="#id26" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>vec<span class="classifier">numpy.ndarray</span></dt><dd><p>The vector to multiply with the matrix.</p>
+</dd>
+</dl>
+</section>
+<section id="id27">
+<h4>Returns:<a class="headerlink" href="#id27" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>numpy.ndarray</dt><dd><p>The result of the matrix-vector multiplication.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooPure.fill_random">
+<span class="sig-name descname"><span class="pre">fill_random</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nnz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.fill_random"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooPure.fill_random" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Fill the COO matrix with random values.</p>
+<section id="id28">
+<h4>Parameters:<a class="headerlink" href="#id28" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>nnz<span class="classifier">int</span></dt><dd><p>The number of non-zero elements to fill.</p>
+</dd>
+<dt>seed<span class="classifier">int, optional</span></dt><dd><p>Seed for the random number generator.</p>
+</dd>
+</dl>
+</section>
+<section id="id29">
+<h4>Returns:<a class="headerlink" href="#id29" title="Lien vers cette rubrique">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooPure.from_numpy">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_pure.MatCooPure" title="benchmark.mat_coo_pure.MatCooPure"><span class="pre">MatCooPure</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.from_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooPure.from_numpy" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a new COO matrix from a NumPy array.</p>
+<section id="id30">
+<h4>Parameters:<a class="headerlink" href="#id30" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>arr<span class="classifier">numpy.ndarray</span></dt><dd><p>The NumPy array to convert to a COO matrix.</p>
+</dd>
+</dl>
+</section>
+<section id="id31">
+<h4>Returns:<a class="headerlink" href="#id31" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>MatCooPure</dt><dd><p>A new COO matrix representing the input array.</p>
+</dd>
+</dl>
+<p>Examples
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; A=np.array([[1,2,0],[0,0,3],[4,0,5]])
+&gt;&gt;&gt; mat=MatCooPure.from_numpy(A)
+&gt;&gt;&gt; print(mat)
+COO matrix ((3, 3)) with nnz=5
+data:
+(0, 0, 1)
+(0, 1, 2)
+(1, 2, 3)
+(2, 0, 4)
+(2, 2, 5)
+&lt;BLANKLINE&gt;</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooPure.identity">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_pure.MatCooPure" title="benchmark.mat_coo_pure.MatCooPure"><span class="pre">MatCooPure</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.identity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooPure.identity" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create an identity matrix of size n x n.</p>
+<section id="id32">
+<h4>Parameters:<a class="headerlink" href="#id32" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>n<span class="classifier">int</span></dt><dd><p>The size of the identity matrix.</p>
+</dd>
+</dl>
+</section>
+<section id="id33">
+<h4>Returns:<a class="headerlink" href="#id33" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>MatCooPure</dt><dd><p>A new COO matrix representing the identity matrix.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooPure.mat_mat_product">
+<span class="sig-name descname"><span class="pre">mat_mat_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#benchmark.mat_coo_pure.MatCooPure" title="benchmark.mat_coo_pure.MatCooPure"><span class="pre">MatCooPure</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_pure.MatCooPure" title="benchmark.mat_coo_pure.MatCooPure"><span class="pre">MatCooPure</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.mat_mat_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooPure.mat_mat_product" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Calculate the product of two COO matrices.</p>
+<section id="id34">
+<h4>Parameters:<a class="headerlink" href="#id34" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>other<span class="classifier">MatCooPure</span></dt><dd><p>The matrix to multiply with the matrix.</p>
+</dd>
+</dl>
+</section>
+<section id="id35">
+<h4>Returns:<a class="headerlink" href="#id35" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>MatCooPure</dt><dd><p>The result of the matrix-matrix multiplication.</p>
+</dd>
+</dl>
+</section>
+<section id="id36">
+<h4>Examples:<a class="headerlink" href="#id36" title="Lien vers cette rubrique">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data1</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat1</span> <span class="o">=</span> <span class="n">MatCooPure</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">data1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data2</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat2</span> <span class="o">=</span> <span class="n">MatCooPure</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">data2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">mat1</span><span class="o">.</span><span class="n">mat_mat_product</span><span class="p">(</span><span class="n">mat2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">data</span>
+<span class="go">[(0, 0, 1.0), (0, 1, 2.0), (2, 0, 24.0), (2, 1, 8.0), (2, 2, 25.0)]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooPure.mat_vec_product">
+<span class="sig-name descname"><span class="pre">mat_vec_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.mat_vec_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooPure.mat_vec_product" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Calculate the product of the COO matrix and a vector.</p>
+<section id="id37">
+<h4>Parameters:<a class="headerlink" href="#id37" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>vec<span class="classifier">numpy.ndarray</span></dt><dd><p>The vector to multiply with the matrix.</p>
+</dd>
+</dl>
+</section>
+<section id="id38">
+<h4>Returns:<a class="headerlink" href="#id38" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>numpy.ndarray</dt><dd><p>The result of the matrix-vector multiplication.</p>
+</dd>
+</dl>
+</section>
+<section id="id39">
+<h4>Examples:<a class="headerlink" href="#id39" title="Lien vers cette rubrique">¶</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">I4</span> <span class="o">=</span> <span class="n">MatCooPure</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">I4</span><span class="o">.</span><span class="n">mat_vec_product</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="go">array([0., 1., 2., 3.])</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="benchmark.MatCooPure.nnz">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">nnz</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#benchmark.MatCooPure.nnz" title="Lien vers cette définition">¶</a></dt>
+<dd><p>The number of non-zero elements in the matrix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooPure.random">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">random</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nnz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#benchmark.mat_coo_pure.MatCooPure" title="benchmark.mat_coo_pure.MatCooPure"><span class="pre">MatCooPure</span></a></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.random"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooPure.random" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Create a random COO matrix.</p>
+<section id="id40">
+<h4>Parameters:<a class="headerlink" href="#id40" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>n<span class="classifier">int</span></dt><dd><p>The number of rows.</p>
+</dd>
+<dt>m<span class="classifier">int</span></dt><dd><p>The number of columns.</p>
+</dd>
+<dt>nnz<span class="classifier">int</span></dt><dd><p>The number of non-zero elements to fill.</p>
+</dd>
+<dt>seed<span class="classifier">int, optional</span></dt><dd><p>Seed for the random number generator.</p>
+</dd>
+</dl>
+</section>
+<section id="id41">
+<h4>Returns:<a class="headerlink" href="#id41" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>MatCooPure</dt><dd><p>A new random COO matrix.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="benchmark.MatCooPure.to_numpy">
+<span class="sig-name descname"><span class="pre">to_numpy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/benchmark/mat_coo_pure.html#MatCooPure.to_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#benchmark.MatCooPure.to_numpy" title="Lien vers cette définition">¶</a></dt>
+<dd><p>Convert the COO matrix to a dense NumPy array.</p>
+<section id="id42">
+<h4>Returns:<a class="headerlink" href="#id42" title="Lien vers cette rubrique">¶</a></h4>
+<dl class="simple">
+<dt>numpy.ndarray</dt><dd><p>A dense NumPy array representing the COO matrix.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MatCOO benchmark</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">benchmark</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">benchmark package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">benchmark</a><ul>
+      <li>Previous: <a href="modules.html" title="Chapitre précédent">benchmark</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Corentin LEPESSEC.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/benchmark.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

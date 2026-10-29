@@ -1,0 +1,2 @@
+[console_scripts]
+benchCOO = benchmark.__main__:main

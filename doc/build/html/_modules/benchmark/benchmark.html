@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html lang="fr" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>benchmark.benchmark &#8212; Documentation MatCOO benchmark 1.0</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=7a28dfa3"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/translations.js?v=e6b791cb"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Code source de benchmark.benchmark</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Benchmark du produit matrice-vecteur : MatCooPure, MatCooOptim, numpy (dense) et scipy.</span>
+
+<span class="sd">Deux expériences sont menées :</span>
+
+<span class="sd">* ``nnz`` : dimension fixe (la plus grande de :data:`DIMENSIONS`), nombre d&#39;éléments non nuls variable ;</span>
+<span class="sd">* ``dim`` : taux de remplissage fixe (:data:`DENSITE`), dimension variable.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.sparse</span><span class="w"> </span><span class="kn">import</span> <span class="n">coo_matrix</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.mat_coo_pure</span><span class="w"> </span><span class="kn">import</span> <span class="n">MatCooPure</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.mat_coo_optim</span><span class="w"> </span><span class="kn">import</span> <span class="n">MatCooOptim</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">timer</span>
+
+<span class="n">DIMENSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">]</span>
+<span class="n">NNZ_DEFAUT</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">20000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">]</span>
+<span class="n">DENSITE</span> <span class="o">=</span> <span class="mf">0.005</span>  <span class="c1"># taux de remplissage de l&#39;expérience &quot;dim&quot;</span>
+
+
+<div class="viewcode-block" id="liste_nnz">
+<a class="viewcode-back" href="../../benchmark.html#benchmark.benchmark.liste_nnz">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">liste_nnz</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Liste croissante de nombres d&#39;éléments non nuls, terminée par ``N``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; liste_nnz(1000)</span>
+<span class="sd">    [50, 100, 200, 500, 1000]</span>
+<span class="sd">    &gt;&gt;&gt; liste_nnz(30)</span>
+<span class="sd">    [30]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">NNZ_DEFAUT</span> <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">N</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="operations">
+<a class="viewcode-back" href="../../benchmark.html#benchmark.benchmark.operations">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">operations</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nnz</span><span class="p">,</span> <span class="n">avec_pure</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Construit une matrice aléatoire n x n avec nnz éléments et renvoie</span>
+<span class="sd">    un dictionnaire {nom: fonction sans argument} calculant le produit matrice-vecteur.</span>
+
+<span class="sd">    Toutes les implémentations utilisent la même matrice et le même vecteur.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; sorted(operations(10, 5, avec_pure=False))</span>
+<span class="sd">    [&#39;coo_optim&#39;, &#39;numpy&#39;, &#39;scipy&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">optim</span> <span class="o">=</span> <span class="n">MatCooOptim</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">nnz</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">dense</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="n">sparse</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">((</span><span class="n">optim</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="n">optim</span><span class="o">.</span><span class="n">row</span><span class="p">,</span> <span class="n">optim</span><span class="o">.</span><span class="n">col</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+
+    <span class="n">ops</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">avec_pure</span><span class="p">:</span>
+        <span class="n">pure</span> <span class="o">=</span> <span class="n">MatCooPure</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">optim</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">ops</span><span class="p">[</span><span class="s2">&quot;coo_pure&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">pure</span><span class="o">.</span><span class="n">mat_vec_product</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">ops</span><span class="p">[</span><span class="s2">&quot;coo_optim&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">optim</span><span class="o">.</span><span class="n">mat_vec_product</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">ops</span><span class="p">[</span><span class="s2">&quot;numpy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">dense</span> <span class="o">@</span> <span class="n">x</span>
+    <span class="n">ops</span><span class="p">[</span><span class="s2">&quot;scipy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">sparse</span> <span class="o">@</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">ops</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_mesurer</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nnz</span><span class="p">,</span> <span class="n">avec_pure</span><span class="p">,</span> <span class="n">temps</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ajoute un temps (en s) par implémentation dans le dictionnaire ``temps``.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">nom</span><span class="p">,</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">operations</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nnz</span><span class="p">,</span> <span class="n">avec_pure</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">timer</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">temps</span><span class="p">[</span><span class="n">nom</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="run_benchmark">
+<a class="viewcode-back" href="../../benchmark.html#benchmark.benchmark.run_benchmark">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_benchmark</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">avec_pure</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Lance les deux expériences.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    N : int</span>
+<span class="sd">        Nombre maximal d&#39;éléments non nuls.</span>
+<span class="sd">    avec_pure : bool</span>
+<span class="sd">        Inclure MatCooPure (lent) ou non.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        ``{&quot;nnz&quot;: {&quot;n&quot;: ..., &quot;x&quot;: [...], &quot;temps&quot;: {nom: [...]}},</span>
+<span class="sd">        &quot;dim&quot;: {&quot;x&quot;: [...], &quot;nnz&quot;: [...], &quot;temps&quot;: {nom: [...]}}}``</span>
+<span class="sd">        Un temps vaut ``nan`` si la mesure précédente a dépassé 1 s.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">noms</span> <span class="o">=</span> <span class="p">([</span><span class="s2">&quot;coo_pure&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">avec_pure</span> <span class="k">else</span> <span class="p">[])</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;coo_optim&quot;</span><span class="p">,</span> <span class="s2">&quot;numpy&quot;</span><span class="p">,</span> <span class="s2">&quot;scipy&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Expérience 1 : dimension fixe, nnz variable</span>
+    <span class="n">n_fixe</span> <span class="o">=</span> <span class="n">DIMENSIONS</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">nnz_list</span> <span class="o">=</span> <span class="n">liste_nnz</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">temps_nnz</span> <span class="o">=</span> <span class="p">{</span><span class="n">nom</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">nom</span> <span class="ow">in</span> <span class="n">noms</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">nnz</span> <span class="ow">in</span> <span class="n">nnz_list</span><span class="p">:</span>
+        <span class="n">_mesurer</span><span class="p">(</span><span class="n">n_fixe</span><span class="p">,</span> <span class="n">nnz</span><span class="p">,</span> <span class="n">avec_pure</span><span class="p">,</span> <span class="n">temps_nnz</span><span class="p">)</span>
+
+    <span class="c1"># Expérience 2 : taux de remplissage fixe, dimension variable (on respecte nnz &lt;= N)</span>
+    <span class="n">nnz_de</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">DENSITE</span> <span class="o">*</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span><span class="p">))</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">DIMENSIONS</span><span class="p">}</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">DIMENSIONS</span> <span class="k">if</span> <span class="n">nnz_de</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">N</span><span class="p">]</span>
+    <span class="n">temps_dim</span> <span class="o">=</span> <span class="p">{</span><span class="n">nom</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">nom</span> <span class="ow">in</span> <span class="n">noms</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">:</span>
+        <span class="n">_mesurer</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nnz_de</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">avec_pure</span><span class="p">,</span> <span class="n">temps_dim</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;nnz&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="n">n_fixe</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">nnz_list</span><span class="p">,</span> <span class="s2">&quot;temps&quot;</span><span class="p">:</span> <span class="n">temps_nnz</span><span class="p">},</span>
+        <span class="s2">&quot;dim&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">dims</span><span class="p">,</span> <span class="s2">&quot;nnz&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">nnz_de</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">],</span> <span class="s2">&quot;temps&quot;</span><span class="p">:</span> <span class="n">temps_dim</span><span class="p">},</span>
+    <span class="p">}</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_tableau</span><span class="p">(</span><span class="n">titre</span><span class="p">,</span> <span class="n">nom_x</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">temps</span><span class="p">):</span>
+    <span class="n">noms</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">temps</span><span class="p">)</span>
+    <span class="n">lignes</span> <span class="o">=</span> <span class="p">[</span><span class="n">titre</span><span class="p">,</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">nom_x</span><span class="si">:</span><span class="s2">&gt;8</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">nom</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">nom</span> <span class="ow">in</span> <span class="n">noms</span><span class="p">])]</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
+        <span class="n">lignes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">&gt;8</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">temps</span><span class="p">[</span><span class="n">nom</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;10.2e</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">nom</span> <span class="ow">in</span> <span class="n">noms</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lignes</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="rapport">
+<a class="viewcode-back" href="../../benchmark.html#benchmark.benchmark.rapport">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">rapport</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rapport textuel des résultats de :func:`run_benchmark` (temps en secondes).&quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nnz&quot;</span><span class="p">][</span><span class="s2">&quot;n&quot;</span><span class="p">]</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">_tableau</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Produit matrice-vecteur, matrice </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">, nnz variable (temps en s)&quot;</span><span class="p">,</span>
+                  <span class="s2">&quot;nnz&quot;</span><span class="p">,</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nnz&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nnz&quot;</span><span class="p">][</span><span class="s2">&quot;temps&quot;</span><span class="p">])</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">_tableau</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Produit matrice-vecteur, taux de remplissage </span><span class="si">{</span><span class="n">DENSITE</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">, dimension variable (temps en s)&quot;</span><span class="p">,</span>
+                  <span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;dim&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;dim&quot;</span><span class="p">][</span><span class="s2">&quot;temps&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">t1</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">t2</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="tracer">
+<a class="viewcode-back" href="../../benchmark.html#benchmark.benchmark.tracer">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tracer</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">sortie</span><span class="o">=</span><span class="s2">&quot;benchCOO.png&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Trace les deux graphes côte à côte et les enregistre au format png dans ``sortie``.&quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;nnz&quot;</span><span class="p">][</span><span class="s2">&quot;n&quot;</span><span class="p">]</span>
+    <span class="n">cas</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;nnz&quot;</span><span class="p">,</span> <span class="s2">&quot;Nombre d&#39;éléments non nuls&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Matrice </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+           <span class="p">(</span><span class="s2">&quot;dim&quot;</span><span class="p">,</span> <span class="s2">&quot;Dimension n&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Taux de remplissage </span><span class="si">{</span><span class="n">DENSITE</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">cle</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">titre</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">cas</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">nom</span><span class="p">,</span> <span class="n">temps</span> <span class="ow">in</span> <span class="n">res</span><span class="p">[</span><span class="n">cle</span><span class="p">][</span><span class="s2">&quot;temps&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="n">cle</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">temps</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">nom</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Temps (s)&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">titre</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">sortie</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">MatCOO benchmark</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">benchmark</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Code du module</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Corentin LEPESSEC.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

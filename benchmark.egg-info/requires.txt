@@ -1,0 +1,9 @@
+numpy
+scipy
+matplotlib
+memory_profiler
+IPython
+pympler
+
+[test]
+pytest

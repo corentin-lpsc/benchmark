@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html lang="fr" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>benchmark &#8212; Documentation MatCOO benchmark 1.0</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=7a28dfa3"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/translations.js?v=e6b791cb"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="benchmark package" href="benchmark.html" />
+    <link rel="prev" title="MatCOO benchmark documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="benchmark">
+<h1>benchmark<a class="headerlink" href="#benchmark" title="Lien vers cette rubrique">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="benchmark.html">benchmark package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#module-benchmark.benchmark">benchmark.benchmark module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#benchmark.benchmark.liste_nnz"><code class="docutils literal notranslate"><span class="pre">liste_nnz()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#benchmark.benchmark.operations"><code class="docutils literal notranslate"><span class="pre">operations()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#benchmark.benchmark.rapport"><code class="docutils literal notranslate"><span class="pre">rapport()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#benchmark.benchmark.run_benchmark"><code class="docutils literal notranslate"><span class="pre">run_benchmark()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#benchmark.benchmark.tracer"><code class="docutils literal notranslate"><span class="pre">tracer()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#module-benchmark.mat_coo_optim">benchmark.mat_coo_optim module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_optim.MatCooOptim"><code class="docutils literal notranslate"><span class="pre">MatCooOptim</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_optim.MatCooOptim.data"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_optim.MatCooOptim.dev_show"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.dev_show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_optim.MatCooOptim.dot"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.dot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_optim.MatCooOptim.fill_random"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.fill_random()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_optim.MatCooOptim.from_arrays"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.from_arrays()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_optim.MatCooOptim.from_numpy"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.from_numpy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_optim.MatCooOptim.identity"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_optim.MatCooOptim.mat_mat_product"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.mat_mat_product()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_optim.MatCooOptim.mat_vec_product"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.mat_vec_product()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_optim.MatCooOptim.nnz"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.nnz</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_optim.MatCooOptim.random"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.random()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_optim.MatCooOptim.to_numpy"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.to_numpy()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#module-benchmark.mat_coo_pure">benchmark.mat_coo_pure module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_pure.MatCooPure"><code class="docutils literal notranslate"><span class="pre">MatCooPure</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_pure.MatCooPure.dev_show"><code class="docutils literal notranslate"><span class="pre">MatCooPure.dev_show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_pure.MatCooPure.dot"><code class="docutils literal notranslate"><span class="pre">MatCooPure.dot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_pure.MatCooPure.fill_random"><code class="docutils literal notranslate"><span class="pre">MatCooPure.fill_random()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_pure.MatCooPure.from_numpy"><code class="docutils literal notranslate"><span class="pre">MatCooPure.from_numpy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_pure.MatCooPure.identity"><code class="docutils literal notranslate"><span class="pre">MatCooPure.identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_pure.MatCooPure.mat_mat_product"><code class="docutils literal notranslate"><span class="pre">MatCooPure.mat_mat_product()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_pure.MatCooPure.mat_vec_product"><code class="docutils literal notranslate"><span class="pre">MatCooPure.mat_vec_product()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_pure.MatCooPure.nnz"><code class="docutils literal notranslate"><span class="pre">MatCooPure.nnz</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_pure.MatCooPure.random"><code class="docutils literal notranslate"><span class="pre">MatCooPure.random()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.mat_coo_pure.MatCooPure.to_numpy"><code class="docutils literal notranslate"><span class="pre">MatCooPure.to_numpy()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#module-benchmark.utils">benchmark.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#functions">Functions:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#benchmark.utils.format_memory"><code class="docutils literal notranslate"><span class="pre">format_memory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#benchmark.utils.init_benchmark_results"><code class="docutils literal notranslate"><span class="pre">init_benchmark_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#benchmark.utils.plot_CPU_time_benchmark"><code class="docutils literal notranslate"><span class="pre">plot_CPU_time_benchmark()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#benchmark.utils.print_benchmark_results"><code class="docutils literal notranslate"><span class="pre">print_benchmark_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#benchmark.utils.timer"><code class="docutils literal notranslate"><span class="pre">timer()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html#module-benchmark">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#benchmark.MatCooOptim"><code class="docutils literal notranslate"><span class="pre">MatCooOptim</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooOptim.data"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooOptim.dev_show"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.dev_show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooOptim.dot"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.dot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooOptim.fill_random"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.fill_random()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooOptim.from_arrays"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.from_arrays()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooOptim.from_numpy"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.from_numpy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooOptim.identity"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooOptim.mat_mat_product"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.mat_mat_product()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooOptim.mat_vec_product"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.mat_vec_product()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooOptim.nnz"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.nnz</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooOptim.random"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.random()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooOptim.to_numpy"><code class="docutils literal notranslate"><span class="pre">MatCooOptim.to_numpy()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="benchmark.html#benchmark.MatCooPure"><code class="docutils literal notranslate"><span class="pre">MatCooPure</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooPure.dev_show"><code class="docutils literal notranslate"><span class="pre">MatCooPure.dev_show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooPure.dot"><code class="docutils literal notranslate"><span class="pre">MatCooPure.dot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooPure.fill_random"><code class="docutils literal notranslate"><span class="pre">MatCooPure.fill_random()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooPure.from_numpy"><code class="docutils literal notranslate"><span class="pre">MatCooPure.from_numpy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooPure.identity"><code class="docutils literal notranslate"><span class="pre">MatCooPure.identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooPure.mat_mat_product"><code class="docutils literal notranslate"><span class="pre">MatCooPure.mat_mat_product()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooPure.mat_vec_product"><code class="docutils literal notranslate"><span class="pre">MatCooPure.mat_vec_product()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooPure.nnz"><code class="docutils literal notranslate"><span class="pre">MatCooPure.nnz</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooPure.random"><code class="docutils literal notranslate"><span class="pre">MatCooPure.random()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="benchmark.html#benchmark.MatCooPure.to_numpy"><code class="docutils literal notranslate"><span class="pre">MatCooPure.to_numpy()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MatCOO benchmark</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html">benchmark package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="Chapitre précédent">MatCOO benchmark documentation</a></li>
+      <li>Next: <a href="benchmark.html" title="Chapitre suivant">benchmark package</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Corentin LEPESSEC.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/modules.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
