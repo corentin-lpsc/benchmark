@@ -17,3 +17,10 @@ Installation :
 $ cd chemin/des/sources
 
 $ pip install .
+
+
+Récupérer la documentation après installation :
+
+$ pip install sphinx
+
+$ python -m sphinx -b html doc/source doc/build/html
