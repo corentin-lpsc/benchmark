@@ -11,3 +11,8 @@ N : nombre max de nnz, avec les paliers 50, 100, 200, 500, 1000, 2000, 5000, 100
 p : trace, affiche et sauvegarde un jpg des graphes
 o : crée un fichier png des graphe
 noCOOPure : exclue matCOOPure du benchmark
+
+Installation : 
+
+$ cd chemin/des/sources
+$ pip install .
